@@ -1,0 +1,41 @@
+- name: create normal SSH key
+  user:
+    name: "{{ ansible_user_id }}"
+    generate_ssh_key: yes
+    ssh_key_bits: 4096
+    ssh_key_file: .ssh/id_rsa
+
+- name: create root SSH key
+  become: yes
+  user:
+    name: "root"
+    generate_ssh_key: yes
+    ssh_key_bits: 4096
+    ssh_key_file: .ssh/id_rsa
+
+- name: upgrade all yum packages
+  become: yes
+  yum:
+    name: '*'
+    state: latest
+
+- name: place the pip config file
+  become: yes
+  template:
+    src: templates/pip.j2
+    dest: /etc/pip.conf
+    owner: root
+    group: wheel
+    mode: "0644"
+
+- name: install virtualenv
+  become: yes
+  pip:
+    name: virtualenv
+    state: latest
+
+- name: install 7zip
+  become: yes
+  yum:
+    name: 'p7zip'
+    state: latest

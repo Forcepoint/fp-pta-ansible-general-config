@@ -1,0 +1,49 @@
+# Configuring the taskbar is not trivial, even in Windows 10. Microsoft forces admins to use domains and group
+# policies, which is not the desired control mechanism here. It's better to just skip setting the taskbar.
+# It was a nice-to-have anyways.
+
+- name: Install all application, security, critical, and rollup updates
+  win_updates:
+    category_names:
+      - Application
+      - SecurityUpdates
+      - CriticalUpdates
+      - UpdateRollups
+      - Updates
+    log_path: C:\ansible_wu.txt
+    reboot: yes
+
+- name: install Git
+  win_chocolatey:
+    name: git.install
+    state: latest
+    params: "/GitOnlyOnPath"
+
+- name: Install Python 3
+  win_chocolatey:
+    name: python3
+    state: latest
+
+- name: create the pip config folder
+  win_file:
+    path: C:\ProgramData\pip
+    state: directory
+
+- name: place the pip config file
+  win_template:
+    src: templates/pip.j2
+    dest: C:\ProgramData\pip\pip.ini
+
+# To use the pip module, virtualenv already needs to be installed. Chicken and egg problem.
+- name: Install pip virtualenv
+  win_command: pip install --upgrade virtualenv
+
+- name: Install Notepad++
+  win_chocolatey:
+    name: notepadplusplus
+    state: latest
+
+- name: Install 7-Zip
+  win_chocolatey:
+    name: 7zip
+    state: latest
