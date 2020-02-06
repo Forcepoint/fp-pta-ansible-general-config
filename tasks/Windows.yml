@@ -25,10 +25,6 @@
     state: latest
     params: "/GitOnlyOnPath"
 
-- name: install Python 3 dependency
-  win_chocolatey:
-    name:
-
 - name: Install Python 3
   win_chocolatey:
     name: python3
