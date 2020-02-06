@@ -2,6 +2,12 @@
 # policies, which is not the desired control mechanism here. It's better to just skip setting the taskbar.
 # It was a nice-to-have anyways.
 
+- name: enable remote desktop connections
+  win_shell: Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Terminal Server" -Name "fDenyTSConnections" -Value 0
+
+- name: enable remote desktop firewall rules
+  win_shell: Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
+
 - name: Install all application, security, critical, and rollup updates
   win_updates:
     category_names:
@@ -18,6 +24,10 @@
     name: git.install
     state: latest
     params: "/GitOnlyOnPath"
+
+- name: install Python 3 dependency
+  win_chocolatey:
+    name:
 
 - name: Install Python 3
   win_chocolatey:
