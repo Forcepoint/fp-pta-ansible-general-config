@@ -28,7 +28,7 @@
     group: wheel
     mode: "0644"
 
-- name: install {{ item }}
+- name: install pip packages
   become: yes
   pip:
     name: "{{ item }}"
