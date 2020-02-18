@@ -28,11 +28,15 @@
     group: wheel
     mode: "0644"
 
-- name: install virtualenv
+- name: install {{ item }}
   become: yes
   pip:
-    name: virtualenv
+    name: "{{ item }}"
     state: latest
+  loop:
+    - pip
+    - setuptools
+    - virtualenv
 
 - name: install 7zip
   become: yes
