@@ -36,7 +36,7 @@ This role is dependent upon the PTA Ansible Role ntp. That role must be included
 
 ## License
 
-BSD
+BSD-3-Clause
 
 ## Author Information
 
