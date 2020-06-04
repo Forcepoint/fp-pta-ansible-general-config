@@ -31,6 +31,7 @@ This role is dependent upon the PTA Ansible Role ntp. That role must be included
       vars:
         general_config_pip_index_url: https://artifactory.COMPANY.com/artifactory/api/pypi/files.pythonhosted.org/simple
         general_config_pip_cert: /etc/pki/ca-trust/custom/COMPANY.pem
+        ntp_server: ntp.COMPANY.com
       roles:
         - role: general-config
 
