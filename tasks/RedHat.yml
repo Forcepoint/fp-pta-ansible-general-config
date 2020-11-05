@@ -13,6 +13,24 @@
     ssh_key_bits: 4096
     ssh_key_file: .ssh/id_rsa
 
+- name: add the github git-lfs repo
+  become: yes
+  yum_repository:
+    name: github_git-lfs
+    baseurl: "{{ general_config_git_lfs_yum_repo_base_url }}"
+    repo_gpgcheck: yes
+    gpgcheck: no
+    enabled: yes
+    gpgkey: "{{ general_config_git_lfs_yum_repo_gpg_key }}"
+    sslverify: yes
+    sslcacert: /etc/pki/tls/certs/ca-bundle.crt
+
+- name: install git-lfs
+  become: yes
+  yum:
+    name: git-lfs
+    state: latest
+
 - name: upgrade all yum packages
   become: yes
   yum:

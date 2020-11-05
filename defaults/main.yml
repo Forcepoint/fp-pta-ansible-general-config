@@ -1,0 +1,5 @@
+---
+
+general_config_git_lfs_yum_repo_base_url: "https://packagecloud.io/github/git-lfs/el/{{ ansible_distribution_major_version }}/$basearch"
+general_config_git_lfs_yum_repo_gpg_key: https://packagecloud.io/gpg.key
+general_config_git_lfs_yum_repo_sslcacert: /etc/pki/tls/certs/ca-bundle.crt
