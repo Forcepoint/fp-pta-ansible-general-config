@@ -33,7 +33,7 @@
     gpgkey: "{{ general_config_git_lfs_yum_repo_gpg_key }}"
     sslverify: yes
     sslcacert: "{{ general_config_git_lfs_yum_repo_sslcacert }}"
-    metadata_expire: 300
+    metadata_expire: "300"
 
 - name: install git-lfs
   become: yes
