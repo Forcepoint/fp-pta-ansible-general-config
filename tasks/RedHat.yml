@@ -13,6 +13,14 @@
     ssh_key_bits: 4096
     ssh_key_file: .ssh/id_rsa
 
+- name: install git-lfs prereqs
+  become: yes
+  yum:
+    name:
+      - pygpgme
+      - yum-utils
+    state: latest
+
 - name: add the github git-lfs repo
   become: yes
   yum_repository:
