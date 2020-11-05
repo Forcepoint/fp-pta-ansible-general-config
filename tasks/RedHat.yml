@@ -31,6 +31,10 @@
     name: git-lfs
     state: latest
 
+- name: enable git-lfs
+  become: yes
+  shell: git lfs install
+
 - name: upgrade all yum packages
   become: yes
   yum:
