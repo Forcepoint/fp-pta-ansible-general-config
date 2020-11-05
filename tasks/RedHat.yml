@@ -13,6 +13,39 @@
     ssh_key_bits: 4096
     ssh_key_file: .ssh/id_rsa
 
+- name: install git-lfs prereqs
+  become: yes
+  yum:
+    name:
+      - pygpgme
+      - yum-utils
+    state: latest
+
+# https://github.com/git-lfs/git-lfs/wiki/Installation#rhelcentos
+- name: add the github git-lfs repo
+  become: yes
+  yum_repository:
+    name: github_git-lfs
+    description: ""
+    baseurl: "{{ general_config_git_lfs_yum_repo_base_url }}"
+    repo_gpgcheck: yes
+    gpgcheck: no
+    enabled: yes
+    gpgkey: "{{ general_config_git_lfs_yum_repo_gpg_key }}"
+    sslverify: yes
+    sslcacert: "{{ general_config_git_lfs_yum_repo_sslcacert }}"
+    metadata_expire: "300"
+
+- name: install git-lfs
+  become: yes
+  yum:
+    name: git-lfs
+    state: latest
+
+- name: enable git-lfs
+  become: yes
+  shell: git lfs install
+
 - name: upgrade all yum packages
   become: yes
   yum:
