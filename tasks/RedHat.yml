@@ -21,6 +21,7 @@
       - yum-utils
     state: latest
 
+# https://github.com/git-lfs/git-lfs/wiki/Installation#rhelcentos
 - name: add the github git-lfs repo
   become: yes
   yum_repository:

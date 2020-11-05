@@ -25,6 +25,9 @@
     state: latest
     params: "/GitOnlyOnPath"
 
+- name: enable git-lfs
+  win_command: git lfs install
+
 - name: Install Python 3
   win_chocolatey:
     name: python3
