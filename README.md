@@ -22,7 +22,8 @@ None
 * general_config_git_lfs_yum_repo_base_url: The base url to use for the Git LFS yum repository.
 * general_config_git_lfs_yum_repo_gpg_key: The url to the gpg key for the Git LFS yum repository.
 * general_config_git_lfs_yum_repo_sslcacert: The path to the cert for yum to verify SSL connections with the yum repository.
-* general_config_git_sslcainfo: The path to a certificate or certificate bundle to verify HTTPS connections with git servers.
+* general_config_git_https_server: The path to a git server to use with the cert provided by sslcainfo.
+* general_config_git_sslcainfo: The path to a certificate to verify HTTPS connections with a git server.
 
 ## Dependencies
 
@@ -40,6 +41,8 @@ This role is dependent upon the PTA Ansible Role ntp. That role must be included
         general_config_git_lfs_yum_repo_base_url: "https://artifactory.COMPANY.com/artifactory/packagecloud.io/github/git-lfs/el/{{ ansible_distribution_major_version }}/$basearch"
         general_config_git_lfs_yum_repo_gpg_key: https://artifactory.COMPANY.com/artifactorypackagecloud.io/github/git-lfs/gpgkey
         general_config_git_lfs_yum_repo_sslcacert: /etc/pki/ca-trust/custom/COMPANY.pem
+        general_config_git_https_server: https://gitlab.COMPANY.com/
+        general_config_git_sslcainfo: /etc/pki/ca-trust/custom/COMPANY.pem
         ntp_server: ntp.COMPANY.com
       roles:
         - role: general-config
