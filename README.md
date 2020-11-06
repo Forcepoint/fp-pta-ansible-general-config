@@ -22,6 +22,7 @@ None
 * general_config_git_lfs_yum_repo_base_url: The base url to use for the Git LFS yum repository.
 * general_config_git_lfs_yum_repo_gpg_key: The url to the gpg key for the Git LFS yum repository.
 * general_config_git_lfs_yum_repo_sslcacert: The path to the cert for yum to verify SSL connections with the yum repository.
+* general_config_git_sslcainfo: The path to a certificate or certificate bundle to verify HTTPS connections with git servers.
 
 ## Dependencies
 

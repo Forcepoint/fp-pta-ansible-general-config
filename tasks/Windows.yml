@@ -28,6 +28,10 @@
 - name: enable git-lfs
   win_command: git lfs install
 
+- name: modify git config http ca info
+  win_shell: git config --global http.sslCAInfo "{{ general_config_git_sslcainfo }}"
+  when: general_config_git_sslcainfo is defined
+
 - name: Install Python 3
   win_chocolatey:
     name: python3

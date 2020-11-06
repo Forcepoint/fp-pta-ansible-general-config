@@ -46,6 +46,11 @@
   become: yes
   shell: git lfs install
 
+- name: modify git config http ca info
+  become: yes
+  shell: git config --global http.sslCAInfo "{{ general_config_git_sslcainfo }}"
+  when: general_config_git_sslcainfo is defined
+
 - name: upgrade all yum packages
   become: yes
   yum:
