@@ -66,13 +66,22 @@
     group: wheel
     mode: "0644"
 
-- name: update pip
+- name: remove pip package with yum
   become: yes
-  pip:
-    name: pip
-    state: latest
-  loop:
-    - pip
+  yum:
+    name: python2-pip
+    state: absent
+
+- name: download pip helper script
+  become: yes
+  get_url:
+    url: https://bootstrap.pypa.io/2.7/get-pip.py
+    dest: /tmp/get-pip.py
+    mode: '0555'
+
+- name: install pip from helper script
+  become: yes
+  shell: python /tmp/get-pip.py
 
 - name: install pip packages
   become: yes
