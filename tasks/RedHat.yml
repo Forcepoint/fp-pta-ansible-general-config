@@ -66,15 +66,21 @@
     group: wheel
     mode: "0644"
 
-- name: install pip packages
+- name: update pip
   become: yes
   pip:
-    name: "{{ item }}"
+    name: pip
     state: latest
   loop:
     - pip
-    - setuptools
-    - virtualenv
+
+- name: install pip packages
+  become: yes
+  pip:
+    name:
+      - setuptools
+      - virtualenv
+    state: latest
 
 - name: install 7zip
   become: yes
