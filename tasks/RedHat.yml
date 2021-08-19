@@ -75,7 +75,7 @@
 - name: download pip helper script
   become: yes
   get_url:
-    url: https://bootstrap.pypa.io/pip/2.7/get-pip.py
+    url: "{{ general_config_pip_download_host }}/pip/2.7/get-pip.py"
     dest: /tmp/get-pip.py
     mode: '0555'
     force: yes
