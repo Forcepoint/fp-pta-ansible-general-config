@@ -13,14 +13,6 @@
     ssh_key_bits: 4096
     ssh_key_file: .ssh/id_rsa
 
-- name: install git-lfs prereqs
-  become: yes
-  yum:
-    name:
-      - pygpgme
-      - yum-utils
-    state: latest
-
 # https://github.com/git-lfs/git-lfs/wiki/Installation#rhelcentos
 - name: add the github git-lfs repo
   become: yes
@@ -36,6 +28,20 @@
     sslcacert: "{{ general_config_git_lfs_yum_repo_sslcacert }}"
     metadata_expire: "300"
 
+- name: upgrade all yum packages
+  become: yes
+  yum:
+    name: '*'
+    state: latest
+
+- name: install git-lfs prereqs
+  become: yes
+  yum:
+    name:
+      - pygpgme
+      - yum-utils
+    state: latest
+
 - name: install git-lfs
   become: yes
   yum:
@@ -50,12 +56,6 @@
   become: yes
   shell: git config --global http."{{ general_config_git_https_server }}".sslCAInfo "{{ general_config_git_sslcainfo }}"
   when: general_config_git_sslcainfo is defined and general_config_git_https_server is defined
-
-- name: upgrade all yum packages
-  become: yes
-  yum:
-    name: '*'
-    state: latest
 
 - name: place the pip config file
   become: yes
