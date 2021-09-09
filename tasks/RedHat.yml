@@ -16,7 +16,7 @@
 # https://github.com/git-lfs/git-lfs/wiki/Installation#rhelcentos
 - name: add the github git-lfs repo
   become: yes
-  yum_repository:
+  ansible.builtin.yum_repository:
     name: github_git-lfs
     description: ""
     baseurl: "{{ general_config_git_lfs_yum_repo_base_url }}"
