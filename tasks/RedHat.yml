@@ -1,5 +1,5 @@
 - name: create normal SSH key
-  user:
+  ansible.builtin.user:
     name: "{{ ansible_user_id }}"
     generate_ssh_key: yes
     ssh_key_bits: 4096
@@ -7,7 +7,7 @@
 
 - name: create root SSH key
   become: yes
-  user:
+  ansible.builtin.user:
     name: "root"
     generate_ssh_key: yes
     ssh_key_bits: 4096
@@ -28,65 +28,39 @@
     sslcacert: "{{ general_config_git_lfs_yum_repo_sslcacert }}"
     metadata_expire: "300"
 
-- name: upgrade all yum packages
+- name: upgrade all packages
   become: yes
-  yum:
+  ansible.builtin.dnf:
     name: '*'
-    state: latest
-
-- name: install git-lfs prereqs
-  become: yes
-  yum:
-    name:
-      - pygpgme
-      - yum-utils
     state: latest
 
 - name: install git-lfs
   become: yes
-  yum:
+  ansible.builtin.dnf:
     name: git-lfs
     state: latest
 
 - name: enable git-lfs
   become: yes
-  shell: git lfs install
+  ansible.builtin.shell: git lfs install
 
 - name: modify git config http ca info
   become: yes
-  shell: git config --global http."{{ general_config_git_https_server }}".sslCAInfo "{{ general_config_git_sslcainfo }}"
+  ansible.builtin.shell: git config --global http."{{ general_config_git_https_server }}".sslCAInfo "{{ general_config_git_sslcainfo }}"
   when: general_config_git_sslcainfo is defined and general_config_git_https_server is defined
 
 - name: place the pip config file
   become: yes
-  template:
+  ansible.builtin.template:
     src: templates/pip.j2
     dest: /etc/pip.conf
     owner: root
     group: wheel
     mode: "0644"
 
-- name: remove pip package with yum
-  become: yes
-  yum:
-    name: python2-pip
-    state: absent
-
-- name: download pip helper script
-  become: yes
-  get_url:
-    url: "{{ general_config_pip_download_host }}/pip/2.7/get-pip.py"
-    dest: /tmp/get-pip.py
-    mode: '0555'
-    force: yes
-
-- name: install pip from helper script
-  become: yes
-  shell: python /tmp/get-pip.py
-
 - name: install pip packages
   become: yes
-  pip:
+  ansible.builtin.pip:
     name:
       - setuptools
       - virtualenv
@@ -94,6 +68,6 @@
 
 - name: install 7zip
   become: yes
-  yum:
+  ansible.builtin.dnf:
     name: 'p7zip'
     state: latest
