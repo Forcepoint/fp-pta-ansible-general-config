@@ -28,6 +28,12 @@
     sslcacert: "{{ general_config_git_lfs_yum_repo_sslcacert }}"
     metadata_expire: "300"
 
+- name: install python2-dnf
+  ansible.builtin.yum:
+    name: python2-dnf
+    state: latest
+  when: ansible_distribution == "CentOS" and ansible_distribution_major_version <= '7'
+
 - name: upgrade all packages
   become: yes
   ansible.builtin.dnf:
