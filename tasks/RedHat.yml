@@ -34,6 +34,15 @@
     name: '*'
     state: latest
 
+- name: install git-lfs prereqs
+  become: yes
+  ansible.builtin.dnf:
+    name:
+      - pygpgme
+      - yum-utils
+    state: latest
+  when: ansible_distribution == "CentOS" and ansible_distribution_major_version <= '7'
+
 - name: install git-lfs
   become: yes
   ansible.builtin.dnf:
@@ -57,6 +66,28 @@
     owner: root
     group: wheel
     mode: "0644"
+
+# CentOS 8 and Stream baselines are assumed to already have latest available python and pip installed from the OS package manager.
+- name: remove pip package with yum
+  become: yes
+  ansible.builtin.dnf:
+    name: python2-pip
+    state: absent
+  when: ansible_distribution == "CentOS" and ansible_distribution_major_version <= '7'
+
+- name: download pip helper script
+  become: yes
+  ansible.builtin.get_url:
+    url: "{{ general_config_pip_download_host }}/pip/2.7/get-pip.py"
+    dest: /tmp/get-pip.py
+    mode: '0555'
+    force: yes
+  when: ansible_distribution == "CentOS" and ansible_distribution_major_version <= '7'
+
+- name: install pip from helper script
+  become: yes
+  ansible.builtin.shell: python /tmp/get-pip.py
+  when: ansible_distribution == "CentOS" and ansible_distribution_major_version <= '7'
 
 - name: install pip packages
   become: yes
