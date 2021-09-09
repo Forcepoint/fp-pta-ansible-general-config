@@ -29,6 +29,7 @@
     metadata_expire: "300"
 
 - name: install python2-dnf
+  become: yes
   ansible.builtin.yum:
     name: python2-dnf
     state: latest
