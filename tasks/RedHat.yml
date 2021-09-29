@@ -102,6 +102,7 @@
 
 - name: install pip from helper script (become)
   become: yes
+  become_method: su
   ansible.builtin.shell: python /tmp/get-pip.py
   when: ansible_distribution == "CentOS" and ansible_distribution_major_version <= '7'
 
