@@ -102,7 +102,6 @@
 
 - name: install pip from helper script (become)
   become: yes
-  become_method: su
   ansible.builtin.shell: python /tmp/get-pip.py
   when: ansible_distribution == "CentOS" and ansible_distribution_major_version <= '7'
 
@@ -110,20 +109,12 @@
   ansible.builtin.shell: python /tmp/get-pip.py
   when: ansible_distribution == "CentOS" and ansible_distribution_major_version <= '7'
 
-- name: install pip packages (become)
-  become: yes
-  become_method: su
-  ansible.builtin.pip:
-    name:
-      - setuptools
-      - virtualenv
-    state: latest
-
 - name: install pip packages
   ansible.builtin.pip:
     name:
       - setuptools
       - virtualenv
+    umask: "0022"
     state: latest
 
 - name: install 7zip
