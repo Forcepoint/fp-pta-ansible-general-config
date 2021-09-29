@@ -91,8 +91,21 @@
     force: yes
   when: ansible_distribution == "CentOS" and ansible_distribution_major_version <= '7'
 
-- name: install pip from helper script
+- name: adjust the path
   become: yes
+  ansible.builtin.copy:
+    src: "files/pip.sh"
+    dest: /etc/profile.d/pip.sh
+    mode: '0644'
+    force: yes
+  when: ansible_distribution == "CentOS" and ansible_distribution_major_version <= '7'
+
+- name: install pip from helper script (become)
+  become: yes
+  ansible.builtin.shell: python /tmp/get-pip.py
+  when: ansible_distribution == "CentOS" and ansible_distribution_major_version <= '7'
+
+- name: install pip from helper script
   ansible.builtin.shell: python /tmp/get-pip.py
   when: ansible_distribution == "CentOS" and ansible_distribution_major_version <= '7'
 
