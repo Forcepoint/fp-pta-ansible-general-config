@@ -111,7 +111,7 @@
 
 - name: install pip packages (become)
   become: yes
-  become_user: root
+  become_method: su
   ansible.builtin.pip:
     name:
       - setuptools
