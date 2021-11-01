@@ -57,12 +57,15 @@
     state: latest
 
 - name: enable git-lfs
+  ansible.builtin.shell: git lfs install
+
+- name: enable git-lfs (become)
   become: yes
   ansible.builtin.shell: git lfs install
 
 - name: modify git config http ca info
   become: yes
-  ansible.builtin.shell: git config --global http."{{ general_config_git_https_server }}".sslCAInfo "{{ general_config_git_sslcainfo }}"
+  ansible.builtin.shell: git config --system http."{{ general_config_git_https_server }}".sslCAInfo "{{ general_config_git_sslcainfo }}"
   when: general_config_git_sslcainfo is defined and general_config_git_https_server is defined
 
 - name: place the pip config file
