@@ -97,7 +97,7 @@
 - name: adjust the path
   become: yes
   ansible.builtin.copy:
-    src: "files/pip.sh"
+    src: "files/path_user_local_bin.sh"
     dest: /etc/profile.d/path_user_local_bin.sh
     mode: '0755'
     force: yes
