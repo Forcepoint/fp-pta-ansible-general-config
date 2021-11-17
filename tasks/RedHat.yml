@@ -98,8 +98,8 @@
   become: yes
   ansible.builtin.copy:
     src: "files/pip.sh"
-    dest: /etc/profile.d/pip.sh
-    mode: '0644'
+    dest: /etc/profile.d/path_user_local_bin.sh
+    mode: '0755'
     force: yes
   when: ansible_distribution == "CentOS" and ansible_distribution_major_version <= '7'
 
