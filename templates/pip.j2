@@ -1,6 +1,4 @@
 [global]
-{% if general_config_pip_index_url is defined %}index-url = {{ general_config_pip_index_url }}{% endif %}
-
-{% if general_config_pip_cert is defined %}cert = {{ general_config_pip_cert }}{% endif %}
-
-user = yes
+{% if general_config_pip_index_url is defined %}index-url = {{ general_config_pip_index_url }}
+{% endif %}{% if general_config_pip_cert is defined %}cert = {{ general_config_pip_cert }}
+{% endif %}user = yes

@@ -74,8 +74,8 @@
     src: templates/pip.j2
     dest: /etc/pip.conf
     owner: root
-    group: wheel
-    mode: "0644"
+    group: root
+    mode: "0444"
 
 # CentOS 8 and Stream baselines are assumed to already have latest available python and pip installed from the OS package manager.
 - name: remove pip package with yum
