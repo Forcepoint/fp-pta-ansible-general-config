@@ -1,3 +1,5 @@
+---
+
 - name: create normal SSH key
   ansible.builtin.user:
     name: "{{ ansible_user_id }}"

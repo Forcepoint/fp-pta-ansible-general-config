@@ -1,6 +1,24 @@
-# Configuring the taskbar is not trivial, even in Windows 10. Microsoft forces admins to use domains and group
-# policies, which is not the desired control mechanism here. It's better to just skip setting the taskbar.
-# It was a nice-to-have anyways.
+---
+
+- name: create the .ssh directory
+  ansible.windows.win_file:
+    path: "%USERPROFILE%\\.ssh"
+    state: directory
+
+- name: create an SSH key
+  local_action:
+    module: ansible.builtin.user
+    # It is safe to assume that there is a service user on the ansible controller.
+    name: service
+    generate_ssh_key: yes
+    ssh_key_bits: 4096
+    ssh_key_file: "{{ role_path }}/files/id_rsa"
+
+- name: copy the ssh key
+  ansible.windows.win_copy:
+    src: "{{ role_path }}/files/id_rsa"
+    dest: "%USERPROFILE%\\.ssh\\id_rsa"
+    force: no
 
 - name: enable remote desktop connections
   win_shell: Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Terminal Server" -Name "fDenyTSConnections" -Value 0

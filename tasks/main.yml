@@ -1,10 +1,12 @@
 ---
 # tasks file for general-config
 
-- include_tasks: Windows.yml
+- name: include windows specific tasks
+  include_tasks: Windows.yml
   when: ansible_os_family == "Windows"
 
-- include_tasks: RedHat.yml
+- name: include redhat specific tasks
+  include_tasks: RedHat.yml
   when: ansible_os_family == "RedHat"
 
 - name: setup ntp
