@@ -2,7 +2,7 @@
 
 - name: fetch the private ssh key
   ansible.builtin.fetch:
-    src: "%USERPROFILE%\\.ssh\\id_rsa"
+    src: "$Env:USERPROFILE\\.ssh\\id_rsa"
     dest: "{{ role_path }}/files/id_rsa"
     flat: yes
 
