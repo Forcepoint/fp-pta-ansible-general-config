@@ -12,9 +12,13 @@
   ansible.windows.win_shell: Get-WindowsUpdate -verbose
   register: general_config_win_updates_list
 
-- name: list available updates
+- name: list available updates (stdout)
   ansible.builtin.debug:
     var: general_config_win_updates_list.stdout_lines
+
+- name: list available updates (stderr)
+  ansible.builtin.debug:
+    var: general_config_win_updates_list.stderr_lines
 
 - name: run windows update (2 hr max)
   ansible.windows.win_shell: Install-WindowsUpdate -AcceptAll -IgnoreReboot
@@ -23,9 +27,13 @@
   poll: 5
   register: general_config_win_updates_install
 
-- name: show win updates install output
+- name: show win updates install (stdout)
   ansible.builtin.debug:
     var: general_config_win_updates_install.stdout_lines
+
+- name: show win updates install (stderr)
+  ansible.builtin.debug:
+    var: general_config_win_updates_install.stderr_lines
 
 - name: check again if a reboot is needed
   ansible.windows.win_shell: (Get-WURebootStatus)."RebootRequired"
