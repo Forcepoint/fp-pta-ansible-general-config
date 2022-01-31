@@ -9,7 +9,7 @@
   when: general_config_win_update_pre_reboot_required.stdout == "False"
 
 - name: get available updates
-  ansible.windows.win_shell: Get-WindowsUpdate -Verbose 4>&1
+  ansible.windows.win_shell: Get-WindowsUpdate -Verbose *>log.txt; cat log.txt; rm log.txt
   register: general_config_win_updates_list
 
 - name: list available updates
@@ -17,7 +17,7 @@
     var: general_config_win_updates_list
 
 - name: run windows update (2 hr max)
-  ansible.windows.win_shell: Install-WindowsUpdate -AcceptAll -IgnoreReboot
+  ansible.windows.win_shell: Install-WindowsUpdate -AcceptAll -IgnoreReboot -Verbose *>log.txt; cat log.txt; rm log.txt
   # Allow updates to run for 2 hours.
   async: 7200
   poll: 5
