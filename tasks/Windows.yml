@@ -41,7 +41,14 @@
       - UpdateRollups
       - Updates
     log_path: C:\ansible_wu.txt
-    reboot: yes
+  register: general_config_win_updates
+
+# On a regular basis, the win_updates task will choke, saying it failed to poll, and that another process was trying to use the output.txt file.
+# This is just a hunch, but in the docs it says "Async does not work when reboot=yes."
+# I'm wondering if I switch to using a win_reboot task instead, if tis problem will go away on its own.
+- name: reboot after updating if needed
+  ansible.windows.win_reboot:
+  when: general_config_win_updates.reboot_required
 
 - name: install Git
   chocolatey.chocolatey.win_chocolatey:
