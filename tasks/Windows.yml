@@ -1,15 +1,39 @@
-# Configuring the taskbar is not trivial, even in Windows 10. Microsoft forces admins to use domains and group
-# policies, which is not the desired control mechanism here. It's better to just skip setting the taskbar.
-# It was a nice-to-have anyways.
+---
+
+- name: create the .ssh directory
+  ansible.windows.win_file:
+    path: "%USERPROFILE%\\.ssh"
+    state: directory
+
+- name: create an SSH key pair
+  local_action:
+    module: ansible.builtin.user
+    # It is safe to assume that there is a service user on the ansible controller.
+    name: service
+    generate_ssh_key: yes
+    ssh_key_bits: 4096
+    ssh_key_file: "{{ role_path }}/files/id_rsa"
+
+- name: copy the private ssh key
+  ansible.windows.win_copy:
+    src: "{{ role_path }}/files/id_rsa"
+    dest: "%USERPROFILE%\\.ssh\\id_rsa"
+    force: no
+
+- name: copy the public ssh key
+  ansible.windows.win_copy:
+    src: "{{ role_path }}/files/id_rsa.pub"
+    dest: "%USERPROFILE%\\.ssh\\id_rsa.pub"
+    force: no
 
 - name: enable remote desktop connections
-  win_shell: Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Terminal Server" -Name "fDenyTSConnections" -Value 0
+  ansible.windows.win_shell: Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Terminal Server" -Name "fDenyTSConnections" -Value 0
 
 - name: enable remote desktop firewall rules
-  win_shell: Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
+  ansible.windows.win_shell: Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
 
 - name: Install all application, security, critical, and rollup updates
-  win_updates:
+  ansible.windows.win_updates:
     category_names:
       - Application
       - SecurityUpdates
@@ -20,43 +44,43 @@
     reboot: yes
 
 - name: install Git
-  win_chocolatey:
+  chocolatey.chocolatey.win_chocolatey:
     name: git.install
     state: latest
     params: "/GitOnlyOnPath"
 
 - name: enable git-lfs
-  win_command: git lfs install
+  ansible.windows.win_command: git lfs install
 
 - name: modify git config http ca info
-  win_shell: git config --global http."{{ general_config_git_https_server }}".sslCAInfo "{{ general_config_git_sslcainfo }}"
+  ansible.windows.win_shell: git config --global http."{{ general_config_git_https_server }}".sslCAInfo "{{ general_config_git_sslcainfo }}"
   when: general_config_git_sslcainfo is defined and general_config_git_https_server is defined
 
 - name: Install Python 3
-  win_chocolatey:
+  chocolatey.chocolatey.win_chocolatey:
     name: python3
     state: latest
 
 - name: create the pip config folder
-  win_file:
+  ansible.windows.win_file:
     path: C:\ProgramData\pip
     state: directory
 
 - name: place the pip config file
-  win_template:
+  ansible.windows.win_template:
     src: templates/pip.j2
     dest: C:\ProgramData\pip\pip.ini
 
 # To use the pip module, virtualenv already needs to be installed. Chicken and egg problem.
 - name: Install pip virtualenv
-  win_command: pip install --upgrade virtualenv
+  ansible.windows.win_command: pip install --upgrade virtualenv
 
 - name: Install Notepad++
-  win_chocolatey:
+  chocolatey.chocolatey.win_chocolatey:
     name: notepadplusplus
     state: latest
 
 - name: Install 7-Zip
-  win_chocolatey:
+  chocolatey.chocolatey.win_chocolatey:
     name: 7zip
     state: latest
