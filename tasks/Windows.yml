@@ -5,23 +5,26 @@
     path: "%USERPROFILE%\\.ssh"
     state: directory
 
-- name: check for private ssh key
-  ansible.windows.win_stat:
-    path: "%USERPROFILE%\\.ssh\\id_rsa"
-  register: general_config_ssh_private
+- name: create an SSH key pair
+  local_action:
+    module: ansible.builtin.user
+    # It is safe to assume that there is a service user on the ansible controller.
+    name: service
+    generate_ssh_key: yes
+    ssh_key_bits: 4096
+    ssh_key_file: "{{ role_path }}/files/id_rsa"
 
-- name: add tasks to create a new ssh keypair
-  ansible.builtin.include_tasks: Windows_ssh_new.yml
-  when: not general_config_ssh_private.stat.exists
+- name: copy the private ssh key
+  ansible.windows.win_copy:
+    src: "{{ role_path }}/files/id_rsa"
+    dest: "%USERPROFILE%\\.ssh\\id_rsa"
+    force: no
 
-- name: check for public ssh key
-  ansible.windows.win_stat:
-    path: "%USERPROFILE%\\.ssh\\id_rsa.pub"
-  register: general_config_ssh_public
-
-- name: add tasks to ensure the pub exists for the private
-  ansible.builtin.include_tasks: Windows_ssh_derive.yml
-  when: general_config_ssh_private.stat.exists and not general_config_ssh_public.stat.exists
+- name: copy the public ssh key
+  ansible.windows.win_copy:
+    src: "{{ role_path }}/files/id_rsa.pub"
+    dest: "%USERPROFILE%\\.ssh\\id_rsa.pub"
+    force: no
 
 - name: enable remote desktop connections
   ansible.windows.win_shell: Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Terminal Server" -Name "fDenyTSConnections" -Value 0
