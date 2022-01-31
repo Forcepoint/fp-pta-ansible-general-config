@@ -9,7 +9,7 @@
   when: general_config_win_update_pre_reboot_required.stdout == "False"
 
 - name: get available updates
-  ansible.windows.win_shell: Get-WindowsUpdate -verbose
+  ansible.windows.win_shell: Get-WindowsUpdate -Verbose 4>&1
   register: general_config_win_updates_list
 
 - name: list available updates
