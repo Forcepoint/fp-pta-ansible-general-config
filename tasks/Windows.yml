@@ -32,16 +32,14 @@
 - name: enable remote desktop firewall rules
   ansible.windows.win_shell: Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
 
-- name: Install all application, security, critical, and rollup updates
-  ansible.windows.win_updates:
-    category_names:
-      - Application
-      - SecurityUpdates
-      - CriticalUpdates
-      - UpdateRollups
-      - Updates
-    log_path: C:\ansible_wu.txt
-    reboot: yes
+- name: install PSWindowsUpdate
+  community.windows.win_psmodule:
+    name: PSWindowsUpdate
+    state: latest
+    allow_clobber: yes
+
+- name: add tasks to install windows updates
+  ansible.builtin.import_tasks: Windows_updates.yml
 
 - name: install Git
   chocolatey.chocolatey.win_chocolatey:
