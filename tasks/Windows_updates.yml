@@ -17,7 +17,8 @@
     var: general_config_win_updates_list.stdout_lines
 
 - name: run windows update (2 hr max)
-  ansible.windows.win_shell: Install-WindowsUpdate -AcceptAll -IgnoreReboot -Verbose *>log.txt; cat log.txt; rm log.txt
+  ansible.windows.win_shell: $ProgressPreference = "SilentlyContinue"; Install-WindowsUpdate -AcceptAll -IgnoreReboot -Verbose *>log.txt; cat log.txt; rm log.txt
+  # https://thinkpowershell.com/hide-powershell-progress-bars/
   # Allow updates to run for 2 hours.
   async: 7200
   poll: 5
