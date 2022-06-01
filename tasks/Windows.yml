@@ -27,7 +27,7 @@
     force: no
 
 - name: download public ca certificates
-  ansible.builtin.get_url:
+  ansible.windows.win_get_url:
     url: "{{ item }}"
     dest: C:\Windows\
   loop: "{{ general_config_ca_certs_download }}"
