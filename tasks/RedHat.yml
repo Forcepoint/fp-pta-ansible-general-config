@@ -15,6 +15,29 @@
     ssh_key_bits: 4096
     ssh_key_file: .ssh/id_rsa
 
+- name: download public ca certificates
+  become: yes
+  ansible.builtin.get_url:
+    url: "{{ item }}"
+    dest: "/etc/pki/ca-trust/source/anchors/"
+    mode: 0644
+  loop: "{{ general_config_ca_certs_download }}"
+  when: general_config_ca_certs_download is defined
+
+- name: copy public ca certificates
+  become: yes
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "/etc/pki/ca-trust/source/anchors/"
+    mode: 0644
+  loop: "{{ general_config_ca_certs_copy }}"
+  when: general_config_ca_certs_copy is defined
+
+- name: import the public ca certificates
+  become: yes
+  ansible.builtin.shell: update-ca-trust
+  when: general_config_ca_certs_download is defined or general_config_ca_certs_copy is defined
+
 # https://github.com/git-lfs/git-lfs/wiki/Installation#rhelcentos
 - name: add the github git-lfs repo
   become: yes

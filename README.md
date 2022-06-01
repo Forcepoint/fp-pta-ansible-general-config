@@ -24,6 +24,8 @@ None
 * general_config_git_lfs_yum_repo_sslcacert: The path to the cert for yum to verify SSL connections with the yum repository.
 * general_config_git_https_server: The path to a git server to use with the cert provided by sslcainfo.
 * general_config_git_sslcainfo: The path to a certificate to verify HTTPS connections with a git server.
+* general_config_ca_certs_download: A list of public CA certificates to download and then import into the OS keystore.
+* general_config_ca_certs_copy: A list of public CA certificates to copy to the host and then import into the OS keystore.
 
 ## Dependencies
 
@@ -43,6 +45,12 @@ This role is dependent upon the PTA Ansible Role ntp. That role must be included
         general_config_git_lfs_yum_repo_sslcacert: /etc/pki/ca-trust/custom/COMPANY.pem
         general_config_git_https_server: https://gitlab.COMPANY.com/
         general_config_git_sslcainfo: /etc/pki/ca-trust/custom/COMPANY.pem
+        general_config_ca_certs_download:
+          - https://artifactory.COMPANY.com/artifactory/certs/COMPANY.pem
+          - https://artifactory.COMPANY.com/artifactory/certs/strange-intermediate-ca.pem
+        general_config_ca_certs_copy:
+          - files/COMPANY.pem
+          - files/strange-intermediate-ca.pem
         ntp_server: ntp.COMPANY.com
       roles:
         - role: general-config
