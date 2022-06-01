@@ -34,7 +34,7 @@
   when: general_config_ca_certs_download is defined
 
 - name: import the downloaded public ca certificates
-  ansible.windows.win_shell: "Import-Certificate -CertStoreLocation cert:\LocalMachine\Root -FilePath 'C:\Windows\{{ item | win_basename }}'"
+  ansible.windows.win_shell: "Import-Certificate -CertStoreLocation cert:\LocalMachine\Root -FilePath 'C:\\Windows\\{{ item | win_basename }}'"
   loop: "{{ general_config_ca_certs_download }}"
   when: general_config_ca_certs_download is defined
 
@@ -46,7 +46,7 @@
   when: general_config_ca_certs_copy is defined
 
 - name: import the copied public ca certificates
-  ansible.windows.win_shell: "Import-Certificate -CertStoreLocation cert:\LocalMachine\Root -FilePath 'C:\Windows\{{ item | win_basename }}'"
+  ansible.windows.win_shell: "Import-Certificate -CertStoreLocation cert:\LocalMachine\Root -FilePath 'C:\\Windows\\{{ item | win_basename }}'"
   loop: "{{ general_config_ca_certs_copy }}"
   when: general_config_ca_certs_copy is defined
 
