@@ -7,7 +7,7 @@
 
 - name: check for user SSH key
   ansible.windows.win_stat:
-    path: %USERPROFILE%\\.ssh\\id_rsa
+    path: "%USERPROFILE%\\.ssh\\id_rsa"
   register: general_config_user_ssh_key_stat
 
 - name: create new key pair
