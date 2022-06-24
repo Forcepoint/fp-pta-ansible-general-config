@@ -14,6 +14,7 @@
   when: not general_config_user_ssh_key_stat.stat.exists
 
 - name: check for root SSH key
+  become: yes
   ansible.builtin.stat:
     path: /root/.ssh/id_rsa
   register: general_config_root_ssh_key_stat
