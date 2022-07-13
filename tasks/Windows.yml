@@ -14,12 +14,9 @@
   block:
     - name: create an SSH key pair
       local_action:
-        module: ansible.builtin.user
-        # It is safe to assume that there is a service user on the ansible controller.
-        name: service
-        generate_ssh_key: yes
-        ssh_key_bits: 4096
-        ssh_key_file: "{{ role_path }}/files/id_rsa"
+        module: community.crypto.openssh_keypair
+        path: "{{ role_path }}/files/id_rsa"
+        size: 4096
 
     - name: copy the private ssh key
       ansible.windows.win_copy:
